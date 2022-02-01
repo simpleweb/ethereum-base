@@ -2206,6 +2206,17 @@ bnb-javascript-sdk-nobroadcast@^2.16.14:
     uuid "^3.3.2"
     websocket-stream "^5.5.0"
 
+bnc-notify@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/bnc-notify/-/bnc-notify-1.9.2.tgz#f077559643ae0eed69759524dff904b7a9f2f07f"
+  integrity sha512-Eeo7NiPuZqhod2dEuL1M67SHUDVm4jExv70yubv5arexN2BhW/ruzCzklPExv/oqo8q6H4fQicQiT4jCN6zPPQ==
+  dependencies:
+    bignumber.js "^9.0.0"
+    bnc-sdk "^3.5.0"
+    lodash.debounce "^4.0.8"
+    regenerator-runtime "^0.13.3"
+    uuid "^3.3.3"
+
 bnc-onboard@^1.36.0:
   version "1.36.0"
   resolved "https://registry.yarnpkg.com/bnc-onboard/-/bnc-onboard-1.36.0.tgz#ba870b47250a7c51becc924fa78097dbf75d5e67"
@@ -2243,7 +2254,7 @@ bnc-onboard@^1.36.0:
     walletlink "^2.2.6"
     web3-provider-engine "^15.0.4"
 
-bnc-sdk@^3.4.1:
+bnc-sdk@^3.4.1, bnc-sdk@^3.5.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/bnc-sdk/-/bnc-sdk-3.7.0.tgz#b6472067baad41e102c4fe748ba3cc32793fca9e"
   integrity sha512-o8vd+LLL+sBU3aE+/tmhilbtkKQpGvA9rBhvT/bszvBpAgSNzVaP3vdmNPaglDmE2WymcrqvQGf57z5l9v+rrw==
@@ -7547,7 +7558,7 @@ regenerator-runtime@0.13.4:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.4.tgz#e96bf612a3362d12bb69f7e8f74ffeab25c7ac91"
   integrity sha512-plpwicqEzfEyTQohIKktWigcLzmNStMGwbOUbykx51/29Z3JOGYldaaNGK7ngNXV+UcoqvIMmloZ48Sr74sd+g==
 
-regenerator-runtime@^0.13.4, regenerator-runtime@^0.13.7:
+regenerator-runtime@^0.13.3, regenerator-runtime@^0.13.4, regenerator-runtime@^0.13.7:
   version "0.13.9"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
   integrity sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==
@@ -8899,7 +8910,7 @@ uuid@8.3.2, uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-uuid@^3.3.2:
+uuid@^3.3.2, uuid@^3.3.3:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
