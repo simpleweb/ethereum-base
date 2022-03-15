@@ -1,25 +1,26 @@
-import Onboard from "bnc-onboard";
+import injectedModule from "@web3-onboard/injected-wallets";
+import { init } from "@web3-onboard/react";
 
-const networkId = parseInt(process.env.NEXT_PUBLIC_NETWORK_ID || "80001", 10);
-const networkName = process.env.NEXT_PUBLIC_NETWORK_NAME || "mumbai";
-const dappId = process.env.NEXT_PUBLIC_BNC_API_KEY;
 const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL;
 
-export default function initOnboard(subscriptions: any) {
-  return Onboard({
-    dappId,
-    hideBranding: true,
-    networkId,
-    networkName,
-    darkMode: false,
-    subscriptions,
-    walletSelect: {
-      wallets: [{ walletName: "metamask" }],
+const injected = injectedModule();
+
+export default init({
+  wallets: [injected],
+  chains: [
+    {
+      id: "0x13881",
+      token: "MATIC",
+      label: "Polygon Mumbai",
+      rpcUrl: RPC_URL,
     },
-    walletCheck: [
-      { checkName: "connect" },
-      { checkName: "accounts" },
-      { checkName: "network" },
+  ],
+  appMetadata: {
+    name: "Ethereum Base",
+    icon: "<svg><svg/>",
+    description: "Ethereum base website",
+    recommendedInjectedWallets: [
+      { name: "MetaMask", url: "https://metamask.io" },
     ],
-  });
-}
+  },
+});
