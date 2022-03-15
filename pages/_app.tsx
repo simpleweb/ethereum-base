@@ -1,54 +1,47 @@
+import type { OnboardAPI } from "@web3-onboard/core";
+import { useConnectWallet, useSetChain, useWallets } from "@web3-onboard/react";
 import type { AppProps } from "next/app";
-import "../styles/globals.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "../components";
-import { addNetwork, NETWORK_ID, readyToTransact } from "../helpers";
 import { initOnboard } from "../services";
-import { useWalletStore } from "../stores";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const {
-    onboard,
-    wallet,
-    setAddress,
-    setNetwork,
-    setBalance,
-    setWallet,
-    setOnboard,
-  } = useWalletStore();
+  const [{ wallet }, connect, disconnect] = useConnectWallet();
+  const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
+  const connectedWallets = useWallets();
+  const [onboard, setOnboard] = useState<OnboardAPI>();
 
   useEffect(() => {
-    if (wallet?.provider) {
-      addNetwork(NETWORK_ID);
-    }
-  }, [wallet]);
-
-  useEffect(() => {
-    const onboard = initOnboard({
-      address: setAddress,
-      network: setNetwork,
-      balance: setBalance,
-      wallet: (wallet: any) => {
-        if (wallet.provider) {
-          setWallet(wallet);
-          window.localStorage.setItem("selectedWallet", wallet.name);
-        } else {
-          setWallet();
-        }
-      },
-    });
-
-    setOnboard(onboard);
+    setOnboard(initOnboard);
   }, []);
 
   useEffect(() => {
-    const previouslySelectedWallet =
-      window.localStorage.getItem("selectedWallet");
+    if (!connectedWallets.length) return;
 
-    if (previouslySelectedWallet && onboard) {
-      readyToTransact(onboard, previouslySelectedWallet);
+    const connectedWalletsLabelArray = connectedWallets.map(
+      ({ label }) => label
+    );
+    window.localStorage.setItem(
+      "connectedWallets",
+      JSON.stringify(connectedWalletsLabelArray)
+    );
+  }, [connectedWallets]);
+
+  useEffect(() => {
+    const previouslyConnectedWallets = JSON.parse(
+      window.localStorage.getItem("connectedWallets")
+    );
+
+    async function setWalletFromLocalStorage() {
+      await connect({ autoSelect: previouslyConnectedWallets[0] });
     }
-  }, [onboard]);
+
+    if (previouslyConnectedWallets?.length) {
+      console.log({ previouslyConnectedWallets });
+      setWalletFromLocalStorage();
+    }
+  }, [onboard, connect]);
 
   return (
     <div className="m-4">
