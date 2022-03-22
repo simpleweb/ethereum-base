@@ -6,17 +6,26 @@ import type {
 
 async function readyToTransact(
   wallet: WalletState,
-  connect: () => void,
-  setChain: (options: SetChainOptions) => void
+  connect: (options: ConnectOptions) => Promise<void>,
+  setChain: (options: SetChainOptions) => Promise<void>
 ) {
+  const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID;
   if (!wallet) {
-    const walletSelected = await connect();
-    if (!walletSelected) return false;
+    const walletSelected = await connect({});
+    if (!Boolean(walletSelected)) return false;
   }
-  // prompt user to switch to Rinkeby for test
-  await setChain({ chainId: process.env.NEXT_PUBLIC_CHAIN_ID });
+  if (CHAIN_ID) {
+    await setChain({ chainId: CHAIN_ID });
+  }
 
   return true;
 }
 
-export { readyToTransact };
+async function switchChain(
+  setChain: (options: SetChainOptions) => Promise<void>,
+  chainId: string
+) {
+  await setChain({ chainId });
+}
+
+export { readyToTransact, switchChain };
