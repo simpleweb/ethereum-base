@@ -1,5 +1,5 @@
 import type { OnboardAPI } from "@web3-onboard/core";
-import { useConnectWallet, useSetChain, useWallets } from "@web3-onboard/react";
+import { useConnectWallet, useWallets } from "@web3-onboard/react";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { Header } from "../components";
@@ -8,7 +8,6 @@ import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [{ wallet }, connect, disconnect] = useConnectWallet();
-  const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
   const connectedWallets = useWallets();
   const [onboard, setOnboard] = useState<OnboardAPI>();
 
@@ -33,20 +32,18 @@ function MyApp({ Component, pageProps }: AppProps) {
       window.localStorage.getItem("connectedWallets")
     );
 
-    async function setWalletFromLocalStorage() {
-      await connect({ autoSelect: previouslyConnectedWallets[0] });
-    }
-
     if (previouslyConnectedWallets?.length) {
-      console.log({ previouslyConnectedWallets });
+      async function setWalletFromLocalStorage() {
+        await connect({ autoSelect: previouslyConnectedWallets[0] });
+      }
       setWalletFromLocalStorage();
     }
   }, [onboard, connect]);
 
   return (
     <div className="m-4">
-      <Header />
-      <Component {...pageProps} />
+      <Header wallet={wallet} disconnect={disconnect} connect={connect} />
+      <Component wallet={wallet} {...pageProps} />
     </div>
   );
 }
