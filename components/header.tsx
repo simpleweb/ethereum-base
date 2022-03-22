@@ -1,55 +1,66 @@
 import { ExternalLinkIcon } from "@heroicons/react/outline";
-import { Button } from "../components";
-import { useWalletStore } from "../stores";
-import { BLOCK_EXPLORER_URL } from "../helpers";
+import {
+  ConnectOptions,
+  DisconnectOptions,
+  WalletState,
+} from "@web3-onboard/core";
+import { useSetChain } from "@web3-onboard/react";
 import useTranslation from "next-translate/useTranslation";
+import { useEffect } from "react";
+import { Button } from "../components";
+import { BLOCK_EXPLORER_URL, switchChain } from "../helpers";
 
-export default function Header() {
-  const { address, onboard, resetWallet } = useWalletStore();
+interface HeaderProps {
+  wallet: WalletState;
+  connect: (options: ConnectOptions) => Promise<void>;
+  disconnect: (options: DisconnectOptions) => Promise<void>;
+}
 
+export default function Header({ wallet, connect, disconnect }: HeaderProps) {
   const { t } = useTranslation("common");
+  const [{}, setChain] = useSetChain();
+  const CHAIN_ID = process.env.NEXT_CHAIN_ID;
 
-  async function connect() {
-    try {
-      if (onboard) {
-        await onboard.walletSelect();
-        await onboard.walletCheck();
-      }
-    } catch (e) {
-      console.log(e);
-    }
+  async function handleConnect() {
+    await connect({});
   }
 
-  async function handleReset() {
-    window.localStorage.removeItem("selectedWallet");
-    resetWallet();
+  useEffect(() => {
+    if (wallet && CHAIN_ID) {
+      switchChain(setChain, CHAIN_ID);
+    }
+  }, [wallet]);
 
-    await onboard.walletReset();
+  async function handleDisconnect() {
+    if (wallet) {
+      await disconnect(wallet);
+    }
   }
 
   return (
     <header className="w-full">
       <div className="flex items-center justify-end">
-        {address ? (
+        {wallet?.accounts[0].address ? (
           <>
             <a
               target="_blank"
               rel="noreferrer"
-              href={BLOCK_EXPLORER_URL(address)}
+              href={BLOCK_EXPLORER_URL(wallet?.accounts[0]?.address)}
             >
-              <div className="flex mx-2 hover:text-indigo-800">
+              <div className="mx-2 flex hover:text-indigo-800">
                 <span>
-                  {address.slice(0, 4)}...{address.slice(-4)}
+                  {wallet?.accounts[0]?.address.slice(0, 4)}...
+                  {wallet?.accounts[0]?.address.slice(-4)}
                 </span>
                 <ExternalLinkIcon className="h-6 w-6" />
               </div>
             </a>
-            <Button onClick={handleReset}>
+            <Button onClick={handleDisconnect}>
               {t("wallet.disconnect_button")}
             </Button>
           </>
         ) : (
-          <Button onClick={connect}>{t("wallet.connect_button")}</Button>
+          <Button onClick={handleConnect}>{t("wallet.connect_button")}</Button>
         )}
       </div>
     </header>
