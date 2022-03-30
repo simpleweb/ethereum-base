@@ -7,7 +7,7 @@ import { initOnboard } from "../services";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [{}, connect] = useConnectWallet();
+  const [{ wallet }, connect] = useConnectWallet();
   const connectedWallets = useWallets();
   const [onboard, setOnboard] = useState<OnboardAPI>();
 
@@ -39,6 +39,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       setWalletFromLocalStorage();
     }
   }, [onboard, connect]);
+
+  useEffect(() => {
+    if (!wallet?.provider) {
+      window.localStorage.removeItem("connectedWallets");
+    }
+  }, [wallet]);
 
   return (
     <div className="m-4">
