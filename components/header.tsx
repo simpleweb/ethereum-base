@@ -1,23 +1,13 @@
 import { ExternalLinkIcon } from "@heroicons/react/outline";
-import {
-  ConnectOptions,
-  DisconnectOptions,
-  WalletState,
-} from "@web3-onboard/core";
-import { useSetChain } from "@web3-onboard/react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect } from "react";
 import { Button } from "../components";
 import { BLOCK_EXPLORER_URL, switchChain } from "../helpers";
 
-interface HeaderProps {
-  wallet: WalletState;
-  connect: (options: ConnectOptions) => Promise<void>;
-  disconnect: (options: DisconnectOptions) => Promise<void>;
-}
-
-export default function Header({ wallet, connect, disconnect }: HeaderProps) {
+export default function Header() {
   const { t } = useTranslation("common");
+  const [{ wallet }, connect, disconnect] = useConnectWallet();
   const [{}, setChain] = useSetChain();
   const CHAIN_ID = process.env.NEXT_CHAIN_ID;
 
