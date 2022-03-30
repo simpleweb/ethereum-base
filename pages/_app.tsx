@@ -7,7 +7,7 @@ import { initOnboard } from "../services";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [{ wallet }, connect, disconnect] = useConnectWallet();
+  const [{}, connect] = useConnectWallet();
   const connectedWallets = useWallets();
   const [onboard, setOnboard] = useState<OnboardAPI>();
 
@@ -42,8 +42,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <div className="m-4">
-      <Header wallet={wallet} disconnect={disconnect} connect={connect} />
-      <Component wallet={wallet} {...pageProps} />
+      <Header />
+      <Component {...pageProps} />
     </div>
   );
 }

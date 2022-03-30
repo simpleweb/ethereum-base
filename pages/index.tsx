@@ -1,10 +1,6 @@
-import { WalletState } from "@web3-onboard/core";
 import type { NextPage } from "next";
-interface HomeProps {
-  wallet: WalletState;
-}
 
-const Home: NextPage = ({ wallet }: HomeProps) => {
+const Home: NextPage = () => {
   return (
     <div
       className="bg-cover"
