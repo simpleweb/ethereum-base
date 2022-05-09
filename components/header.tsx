@@ -9,7 +9,7 @@ export default function Header() {
   const { t } = useTranslation("common");
   const [{ wallet }, connect, disconnect] = useConnectWallet();
   const [{}, setChain] = useSetChain();
-  const CHAIN_ID = process.env.NEXT_CHAIN_ID;
+  const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID;
 
   async function handleConnect() {
     await connect({});
